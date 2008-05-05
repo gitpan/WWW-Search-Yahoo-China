@@ -1,9 +1,9 @@
 
-# $Id: China.pm,v 2.11 2008/03/26 03:22:55 Martin Exp $
+# $Id: China.pm,v 2.12 2008/05/05 10:31:00 Martin Exp $
 
 =head1 NAME
 
-WWW::Search::Yahoo::China - class for searching Yahoo! China
+WWW::Search::Yahoo::China - WWW::Search backend for searching Yahoo! China
 
 =head1 SYNOPSIS
 
@@ -32,24 +32,9 @@ cut-and-pasted Chinese characters from cn.yahoo.com.
 It seems that if your query is in UTF-8, sending option {ei =>
 'UTF-8'} makes it do the right thing.
 
-=head1 SEE ALSO
+=head1 PRIVATE METHODS
 
-To make new back-ends, see L<WWW::Search>.
-
-=head1 BUGS
-
-Please tell the maintainer if you find any!
-
-=head1 AUTHOR
-
-C<WWW::Search::Yahoo> is maintained by Martin Thurn
-(mthurn@cpan.org).
-
-=head1 LEGALESE
-
-THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
-WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+=over
 
 =cut
 
@@ -63,10 +48,10 @@ use WWW::Search::Yahoo 2.372;
 use base 'WWW::Search::Yahoo';
 
 our
-$VERSION = do { my @r = (q$Revision: 2.11 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 2.12 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 our $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
-sub native_setup_search
+sub _native_setup_search
   {
   my ($self, $sQuery, $rh) = @_;
   $self->{'_options'} = {
@@ -76,8 +61,8 @@ sub native_setup_search
                         };
   $rh->{'search_base_url'} = 'http://cn.search.yahoo.com';
   $rh->{'search_base_path'} = '/search/cn';
-  return $self->SUPER::native_setup_search($sQuery, $rh);
-  } # native_setup_search
+  return $self->SUPER::_native_setup_search($sQuery, $rh);
+  } # _native_setup_search
 
 sub _where_to_find_count
   {
@@ -129,6 +114,14 @@ sub _a_is_next_link
   return ($oA->as_HTML =~ m!&Iuml;&Acirc;&Ograve;&raquo;&Ograve;&sup3;!i);
   } # _a_is_next_link
 
+=item parse_details
+
+Given a (portion of an) HTML::TreeBuilder tree
+and a L<WWW::SearchResult> object,
+parses one result out of the tree and populates the SearchResult.
+
+=cut
+
 sub parse_details
   {
   my $self = shift;
@@ -167,3 +160,22 @@ sub parse_details
 
 __END__
 
+=back
+
+=head1 SEE ALSO
+
+To make new back-ends, see L<WWW::Search>.
+
+=head1 BUGS
+
+Please tell the maintainer if you find any!
+
+=head1 AUTHOR
+
+Martin Thurn <mthurn@cpan.org>
+
+=head1 LICENSE
+
+This software is released under the same license as Perl itself.
+
+=cut

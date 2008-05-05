@@ -13,4 +13,5 @@ MANIFEST			This list of files
 META.yml
 README
 t/china.t
+t/pod-coverage.t
 t/pod.t

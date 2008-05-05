@@ -1,10 +1,10 @@
 
-# $Id: Makefile.PL,v 1.2 2008/03/26 03:21:28 Martin Exp $
+# $Id: Makefile.PL,v 1.3 2008/05/05 10:26:16 Martin Exp $
 
 use inc::Module::Install;
 
 name('WWW-Search-Yahoo-China');
-version(1.001);
+version(1.002);
 
 author('Martin Thurn <mthurn@cpan.org>');
 license('perl');
