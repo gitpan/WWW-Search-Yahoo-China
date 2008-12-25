@@ -1,5 +1,5 @@
 
-# $Id: China.pm,v 2.12 2008/05/05 10:31:00 Martin Exp $
+# $Id: China.pm,v 2.14 2008/12/25 23:40:56 Martin Exp $
 
 =head1 NAME
 
@@ -48,7 +48,7 @@ use WWW::Search::Yahoo 2.372;
 use base 'WWW::Search::Yahoo';
 
 our
-$VERSION = do { my @r = (q$Revision: 2.12 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 2.14 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 our $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
 sub _native_setup_search
@@ -67,8 +67,8 @@ sub _native_setup_search
 sub _where_to_find_count
   {
   my %hash = (
-              _tag => 'span',
-              class => 'num',
+              _tag => 'div',
+              class => 'rltnum',
              );
   return \%hash;
   } # _where_to_find_count
@@ -78,17 +78,9 @@ sub _string_has_count
   my $self = shift;
   my $s = shift;
   # I NEED A CHINESE READER TO SEND ME THE CORRECT PATTERN.
-  return $1 if ($s =~ m!([,0-9]+)[^0-9]*\z!i);
+  return $1 if ($s =~ m!([,0-9]+)!i);
   return -1;
   } # _string_has_count
-
-sub _result_list_tags
-  {
-  return (
-          _tag => 'div',
-          class => 'i',
-         );
-  } # _result_list_tags
 
 sub _result_list_items
   {
@@ -96,8 +88,9 @@ sub _result_list_items
   my $oTree = shift || die;
   my $oDIV = $oTree->look_down(
                                _tag => 'div',
-                               class => 'rst'
+                               class => 'yst-web'
                               );
+  print STDERR " DDD oDIV is $oDIV...\n" if (2 <= $self->{_debug});
   return () if ! ref $oDIV;
   my @ao = $oDIV->look_down(_tag => 'li');
   return @ao;

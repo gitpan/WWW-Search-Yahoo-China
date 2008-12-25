@@ -1,12 +1,16 @@
-use ExtUtils::testlib;
+
+# $Id: china.t,v 1.3 2008/12/25 23:40:46 Martin Exp $
+
+use blib;
 use Test::More no_plan;
 
-BEGIN { use_ok('WWW::Search') };
-BEGIN { use_ok('WWW::Search::Test') };
-BEGIN { use_ok('WWW::Search::Yahoo') };
-BEGIN { use_ok('WWW::Search::Yahoo::China') };
+use WWW::Search::Test;
+BEGIN
+  {
+  use_ok('WWW::Search::Yahoo::China');
+  }
 
-&tm_new_engine('Yahoo::China');
+tm_new_engine('Yahoo::China');
 my $iDebug = 0;
 my $iDump = 0;
 
@@ -17,9 +21,10 @@ my $iDump = 0;
 diag("Sending 0-page query to cn.yahoo.com...");
 $iDebug = 0;
 $iDump = 0;
-&tm_run_test('normal', $WWW::Search::Test::bogus_query, 0, 0, $iDebug, $iDump);
+tm_run_test('normal', $WWW::Search::Test::bogus_query, 0, 0, $iDebug, $iDump);
 # goto ALL_DONE; # for testing
 TEST_NOW:
+pass();
 $iDebug = 0;
 $iDump = 0;
 # This query returns 1 page of results:
@@ -27,10 +32,10 @@ diag("Sending 1-page query to cn.yahoo.com...");
 TODO:
   {
   $TODO = q{I need a Chinese reader to implement the result-count regex};
-  &tm_run_test('normal',
-               # "\xE8\xAF\xB7\xE4\xB9\xA6\xE7\x9A\x84\xE5\x86\x99\xE6\xB3\x95",
-               'wiz'.'erdry',
-               1, 99, $iDebug, $iDump, {ei => 'UTF-8'});
+  tm_run_test('normal',
+              # "\xE8\xAF\xB7\xE4\xB9\xA6\xE7\x9A\x84\xE5\x86\x99\xE6\xB3\x95",
+              'wiz'.'ardery',
+              1, 99, $iDebug, $iDump, {ei => 'UTF-8'});
   $TODO = '';
   } # end of TODO block
 my @ao = $WWW::Search::Test::oSearch->results();
@@ -46,6 +51,7 @@ foreach my $oResult (@ao)
   } # foreach
 # goto ALL_DONE;
 MULTI_TEST:
+pass();
 diag("Sending multi-page query to cn.yahoo.com...");
 $iDebug = 0;
 $iDump = 0;
@@ -53,12 +59,12 @@ $iDump = 0;
 TODO:
   {
   $TODO = q{I need a Chinese reader to implement the result-count regex};
-  &tm_run_test('normal', "\xCB\xBD", 21, undef, $iDebug, $iDump);
+  tm_run_test('normal', "\xCB\xBD", 21, undef, $iDebug, $iDump);
   $TODO = '';
   } # end of TODO block
 
 ALL_DONE:
-exit 0;
+pass();
 
 __END__
 
